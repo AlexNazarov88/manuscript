@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets
+QT += qml quick widgets quickcontrols2
 CONFIG += c++11
 
 SOURCES += main.cpp \
@@ -18,3 +18,16 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     editmodule.h
+
+
+#Application version
+VERSION_MAJOR = 0
+VERSION_MINOR = 1
+VERSION_BUILD = 10
+
+DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
+       "VERSION_MINOR=$$VERSION_MINOR"\
+       "VERSION_BUILD=$$VERSION_BUILD"
+
+#Target version
+VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}.$${VERSION_BUILD}

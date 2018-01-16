@@ -1,26 +1,24 @@
 import QtQuick 2.7
-//import QtQuick.Window 2.2
-import QtQuick.Controls 2.0
-import sparkly.editmodule 1.0
+import QtQuick.Controls 1.4
+import sparkly.editmodule 0.1
 
 ApplicationWindow {
+    id: window
     visible: true
     width: 640
     height: 480
     title: qsTr("Manuscript")
 
-    EditModule {
-        id: editModule
-    }
+
+    menuBar: MenuModule {}
+
+    EditModule { id: editModule}
 
     Item {
+        //Content area
         anchors.fill: parent
 
         TextEdit {
-            //x: 8
-            //y: 80
-            //width: 624
-            //height: 379
             anchors.fill: parent
 
             textFormat: Text.PlainText
@@ -31,6 +29,9 @@ ApplicationWindow {
             font.pointSize: 12
             cursorVisible: true
             focus: true
+
+            //color: "white"
+
 
             //text: logic.text
             onTextChanged: editModule.m_text = text
