@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>MenuModule.qml</file>
+        <file>MenuComponent.qml</file>
     </qresource>
 </RCC>

@@ -6,13 +6,13 @@
 
 #include <QDebug>
 
-#include "editmodule.h"
+#include "editlogic.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    qmlRegisterType<EditModule>("sparkly.editmodule", 0, 1, "EditModule");
+    qmlRegisterType<EditLogic>("sparkly.editlogic", 0, 1, "EditLogic");
 
     QQuickStyle::setStyle("Imagine");
 

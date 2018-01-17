@@ -1,17 +1,17 @@
-#ifndef EDITMODULE_H
-#define EDITMODULE_H
+#ifndef EDITLOGIC_H
+#define EDITLOGIC_H
 
 #include <QPlainTextEdit>
 #include <QObject>
 
-class EditModule : public QPlainTextEdit
+class EditLogic : public QPlainTextEdit
 {
     Q_OBJECT
 
     Q_PROPERTY(QString m_text READ text WRITE setText NOTIFY textChanged)
 
 public:
-    EditModule(QWidget *parent = 0);
+    EditLogic(QWidget *parent = 0);
 
     QString text() const;
     void setText(QString &text);
@@ -22,4 +22,4 @@ signals:
 private:
     QString m_text;
 };
-#endif // EDITMODULE_H
+#endif // EDITLOGIC_H

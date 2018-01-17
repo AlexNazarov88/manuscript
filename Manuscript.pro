@@ -4,7 +4,7 @@ QT += qml quick widgets quickcontrols2
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    editmodule.cpp
+    editlogic.cpp
 
 RESOURCES += qml.qrc
 
@@ -17,7 +17,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    editmodule.h
+    editlogic.h
 
 
 #Application version

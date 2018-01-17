@@ -1,18 +1,18 @@
-#include "editmodule.h"
+#include "editlogic.h"
 #include "QDebug"
 
-EditModule::EditModule(QWidget *parent) :
+EditLogic::EditLogic(QWidget *parent) :
     QPlainTextEdit(parent)
 {
 
 }
 
-QString EditModule::text() const
+QString EditLogic::text() const
 {
     return m_text;
 }
 
-void EditModule::setText(QString &text)
+void EditLogic::setText(QString &text)
 {
     if (m_text == text) {
         return;

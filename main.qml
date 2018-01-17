@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
-import sparkly.editmodule 0.1
+import sparkly.editlogic 0.1
 
 ApplicationWindow {
     id: window
@@ -10,9 +10,9 @@ ApplicationWindow {
     title: qsTr("Manuscript")
 
 
-    menuBar: MenuModule {}
+    menuBar: MenuComponent {}
 
-    EditModule { id: editModule}
+    EditLogic { id: editlogic }
 
     Item {
         //Content area
@@ -34,7 +34,7 @@ ApplicationWindow {
 
 
             //text: logic.text
-            onTextChanged: editModule.m_text = text
+            onTextChanged: EditLogic.m_text = text
         }
     } //item
 
