@@ -31,3 +31,6 @@ DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
 
 #Target version
 VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}.$${VERSION_BUILD}
+
+
+RC_ICONS1 = icons/scroll.ico

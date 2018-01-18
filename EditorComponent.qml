@@ -1,21 +1,25 @@
-import QtQuick 2.7
+import QtQuick 2.0
 import QtQuick.Controls 1.4
-import sparkly.editlogic 0.1
 
-ApplicationWindow {
-    id: window
-    visible: true
-    width: 640
-    height: 480
-    title: qsTr("Manuscript")
+TabView {
+    id: tabView
+    anchors.fill: parent
 
+    TextArea {
+        id: appEditor
+        anchors.fill: parent
 
-    menuBar: MenuComponent {}
+        textFormat: Text.PlainText
+        wrapMode: Text.Wrap
+        selectByMouse: true
 
-    EditLogic { id: editLogic }
-    EditorComponent { id: editor}
+        //font.pointSize: 12
+        //cursorVisible: true
+        focus: true
 
-    statusBar: StatusBarComponent { id: statusBar}
+        text: editLogic.m_text
+        onTextChanged: editLogic.m_text = text
+    }
 }
 
 

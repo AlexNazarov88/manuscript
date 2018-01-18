@@ -2,9 +2,9 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 
 MenuBar {
-
+    id: appMenuBar
     Menu {
-
+        id: fileMenu
         title: qsTr("File")
         MenuItem {
             text: qsTr("Open...")
@@ -26,7 +26,7 @@ MenuBar {
     } // file
 
     Menu {
-
+        id: editMenu
         title: qsTr("Edit")
         MenuItem {
             text: qsTr("Undo")
@@ -69,8 +69,8 @@ MenuBar {
     } // edit
 
     Menu {
+        id: optionsMenu
         title: qsTr("Options")
-
         MenuItem {
             text: qsTr("Settings...")
 
@@ -78,8 +78,8 @@ MenuBar {
     } // options
 
     Menu {
+        id: helpMenu
         title: qsTr("Help")
-
         MenuItem {
             text: qsTr("About Manuscript")
 

@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>MenuComponent.qml</file>
+        <file>EditorComponent.qml</file>
+        <file>StatusBarComponent.qml</file>
+        <file>icons/scroll.ico</file>
     </qresource>
 </RCC>
