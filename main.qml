@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
-import sparkly.editlogic 0.1
+import sparkly.editorlogic 0.1
 
 ApplicationWindow {
     id: window
@@ -12,36 +12,10 @@ ApplicationWindow {
 
     menuBar: MenuComponent {}
 
-    EditLogic { id: editLogic }
-    EditorComponent { id: editor}
+    EditorLogic { id: cppeditor } // c++
+    EditorComponent {}
 
-    statusBar: StatusBarComponent { id: statusBar}
+    statusBar: StatusBarComponent { }
 }
 
 
-/*
-Item {
-    //Content area
-    anchors.fill: parent
-
-    TextEdit {
-        anchors.fill: parent
-
-        textFormat: Text.PlainText
-        wrapMode: Text.Wrap
-        selectByMouse: true
-
-        //font.family: customFont.name
-        font.pointSize: 12
-        cursorVisible: true
-        focus: true
-
-        //color: "white"
-
-
-        //text: logic.text
-        onTextChanged: editLogic.m_text = text
-    }
-
-} //item
-*/

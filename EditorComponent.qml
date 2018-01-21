@@ -1,26 +1,23 @@
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Controls 1.4
 
-TabView {
-    id: tabView
+TextArea {
+    id: qmlEditor
     anchors.fill: parent
 
-    TextArea {
-        id: appEditor
-        anchors.fill: parent
+    textFormat: Text.PlainText
+    wrapMode: Text.Wrap
+    selectByMouse: true
 
-        textFormat: Text.PlainText
-        wrapMode: Text.Wrap
-        selectByMouse: true
+    //font.pointSize: 12
+    //cursorVisible: true
+    focus: true
 
-        //font.pointSize: 12
-        //cursorVisible: true
-        focus: true
-
-        text: editLogic.m_text
-        onTextChanged: editLogic.m_text = text
-    }
+    //text: EditorLogic.toPlainText()
+    //textDocument: EditorLogic.document() //
+    //onTextChanged: EditorLogic.setPlainText(text)
 }
+
 
 
 /*
@@ -44,7 +41,7 @@ Item {
 
 
         //text: logic.text
-        onTextChanged: editLogic.m_text = text
+        onTextChanged: EditorLogic.m_text = text
     }
 
 } //item

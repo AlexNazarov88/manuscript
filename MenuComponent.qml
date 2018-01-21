@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 
 MenuBar {
-    id: appMenuBar
+    id: qmlMenuBar
     Menu {
         id: fileMenu
         title: qsTr("File")

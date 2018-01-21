@@ -6,13 +6,13 @@
 
 #include <QDebug>
 
-#include "editlogic.h"
+#include "editorlogic.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    qmlRegisterType<EditLogic>("sparkly.editlogic", 0, 1, "EditLogic");
+    qmlRegisterType<EditorLogic>("sparkly.editorlogic", 0, 1, "EditorLogic");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

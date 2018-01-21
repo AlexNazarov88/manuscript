@@ -3,7 +3,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
 
 StatusBar {
-    anchors.fill: parent
+    id: statusBar
+    anchors.fill: parent //
 
     RowLayout {
         anchors.fill: parent
