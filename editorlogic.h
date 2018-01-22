@@ -9,23 +9,25 @@ class EditorLogic : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(edit->toPlainText() READ text WRITE setText NOTIFY textChanged)
+    //Q_PROPERTY(QString m_text READ text WRITE setText NOTIFY textChanged) //
 
 public:
     EditorLogic(QWidget *parent = 0);
 
-    QString text() const;
-    void setText(const QString&);
+    // getters
+    Q_INVOKABLE QString text() const;
+    Q_INVOKABLE QTextDocument* document() const;
+
+    // setters
+    Q_INVOKABLE void setText(const QString&); //
 
 
-    //QTextDocument* doc() const; //
 
 signals:
-    void textChanged();
+    void textChanged(QString);
 
 private:
 
-    QPlainTextEdit* edit;
-    //QString m_text; //
+    QPlainTextEdit*     m_edit;
 };
 #endif // EDITORLOGIC_H

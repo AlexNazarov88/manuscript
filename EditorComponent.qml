@@ -13,9 +13,9 @@ TextArea {
     //cursorVisible: true
     focus: true
 
-    //text: EditorLogic.toPlainText()
-    //textDocument: EditorLogic.document() //
-    //onTextChanged: EditorLogic.setPlainText(text)
+    text: cppeditor.text()
+    onTextChanged: cppeditor.setText(text)
+
 }
 
 

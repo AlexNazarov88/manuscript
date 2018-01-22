@@ -8,6 +8,7 @@ StatusBar {
 
     RowLayout {
         anchors.fill: parent
-        Label { text: "Read Only" }
+        Label {}
+            //text: "Line: " + cppeditor.document().textCursor.blockNumber } //
     }
 }
