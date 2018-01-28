@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QPlainTextEdit>
+#include "statusbarlogic.h"
 
 class EditorLogic : public QObject
 {
@@ -17,7 +18,7 @@ public:
     // getters
     Q_INVOKABLE QString text() const;
     Q_INVOKABLE QTextDocument* document() const;
-
+    Q_INVOKABLE QTextCursor cursor() const;
     // setters
     Q_INVOKABLE void setText(const QString&); //
 
@@ -26,8 +27,17 @@ public:
 signals:
     void textChanged(QString);
 
+
 private:
 
     QPlainTextEdit*     m_edit;
+
+    StatusBar*           m_bar;
+
 };
+
+
+
 #endif // EDITORLOGIC_H
+
+

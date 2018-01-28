@@ -4,7 +4,8 @@ QT += qml quick widgets quickcontrols2
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    editorlogic.cpp
+    editorlogic.cpp \
+    statusbarlogic.cpp
 
 RESOURCES += qml.qrc
 
@@ -17,7 +18,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    editorlogic.h
+    editorlogic.h \
+    statusbarlogic.h
 
 
 #Application version

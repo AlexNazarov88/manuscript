@@ -15,7 +15,7 @@ ApplicationWindow {
     EditorLogic { id: cppeditor } // c++
     EditorComponent {}
 
-    statusBar: StatusBarComponent { }
+    //statusBar: StatusBarComponent { }
 }
 
 
