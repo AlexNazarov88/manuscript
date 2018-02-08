@@ -4,10 +4,10 @@ QT += qml quick widgets quickcontrols2
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    editorlogic.cpp \
-    statusbarlogic.cpp
+    editormodule.cpp \
+    mainwindow.cpp
 
-RESOURCES += qml.qrc
+RESOURCES +=
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -18,8 +18,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    editorlogic.h \
-    statusbarlogic.h
+    editormodule.h \
+    mainwindow.h
 
 
 #Application version
