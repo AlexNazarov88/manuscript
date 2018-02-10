@@ -1,30 +1,35 @@
 #include <QApplication>
-//#include <QQmlApplicationEngine>
-
-//#include <QtQuickControls2>
-//#include <QQuickStyle>
-
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 #include <QDebug>
 
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
+
+    Q_INIT_RESOURCE(app_res);
+
     QApplication app(argc, argv);
+    QCoreApplication::setOrganizationName("Sparkly");
+    QCoreApplication::setApplicationName("Manuscript");
+    //
+    QString version = QString("Manuscript v%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
+    qDebug()<< version;
+    QCoreApplication::setApplicationVersion(version/*QT_VERSION_STR*/);
 
-
-    MainWindow window;
-    //qmlRegisterType<EditorLogic>("sparkly.editorlogic", 0, 1, "EditorLogic");
-
-    //QQmlApplicationEngine engine;
-    //engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    QCommandLineParser parser;
+    parser.setApplicationDescription(QCoreApplication::applicationName());
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("file", "The file to open.");
+    parser.process(app);
 
     app.setWindowIcon(QIcon(":icons/scroll.ico"));
 
-    window.show();
-
-    QString version = QString("Manuscript v%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
-    qDebug()<< version;
-
+    MainWindow mainWin;
+    if (!parser.positionalArguments().isEmpty())
+        mainWin.loadFile(parser.positionalArguments().first());
+    mainWin.show();
     return app.exec();
 }

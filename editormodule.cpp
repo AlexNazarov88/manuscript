@@ -4,13 +4,8 @@
 EditorModule::EditorModule(QWidget *parent) :
     QPlainTextEdit(parent)
 {
-    //m_edit = new QPlainTextEdit();
 
-    //m_doc = new QTextDocument();
 
-    // transfer data from QML to C++
-    //connect(this, SIGNAL(textChanged(QString)), m_edit , SLOT(setPlainText(QString)));
-    //connect(m_edit->document(), SIGNAL(cursorPositionChanged(QTextCursor)), m_bar, SLOT(updateStatusBar(QTextCursor)));
 }
 
 /*

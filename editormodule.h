@@ -3,7 +3,6 @@
 
 
 #include <QObject>
-#include <QWidget>
 #include <QPlainTextEdit>
 
 
@@ -18,16 +17,12 @@ public:
     //QString text() const;
     //QTextDocument* document() const;
     //QTextCursor cursor() const;
-
     //int cursorLine() const; //
-   // int cursorColumn() const; //
-
+    // int cursorColumn() const; //
 
     // setters
     //void setText(const QString&);
-
     //void setDocument(QTextDocument*); //
-
     //void setCursor(const QTextCursor);
 
 
@@ -37,8 +32,6 @@ signals:
 
 private:
 
-    //QPlainTextEdit*     m_edit;
-    //QTextDocument*      m_doc;
 
 };
 
