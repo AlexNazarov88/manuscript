@@ -1,7 +1,7 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 #include "editormodule.h"
-
+#include "statusbar.h"
 
 MainWindow::MainWindow()
     : textEdit(new EditorModule)
@@ -9,18 +9,21 @@ MainWindow::MainWindow()
     setCentralWidget(textEdit);
 
     createActions();
-    createStatusBar();
+    //createStatusBar();
 
     readSettings();
 
     connect(textEdit->document(), &QTextDocument::contentsChanged,
             this, &MainWindow::documentWasModified);
+    connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(updateStatusBar() ));
 
 #ifndef QT_NO_SESSIONMANAGER
     QGuiApplication::setFallbackSessionManagementEnabled(false);
     connect(qApp, &QGuiApplication::commitDataRequest,
             this, &MainWindow::commitData);
 #endif
+
+    createStatusBar();
 
     setCurrentFile(QString());
     setUnifiedTitleAndToolBarOnMac(true);
@@ -181,7 +184,20 @@ void MainWindow::createActions()
 
 void MainWindow::createStatusBar() // to do
 {
-    statusBar()->showMessage(tr("Ready"));
+    m_lineColumn= new QLabel();
+
+    statusBar()->insertWidget(0, m_lineColumn, 1);
+
+
+    emit textEdit->cursorPositionChanged();
+    //statusBar()->showMessage(tr("Ready"));
+    //m_statusBar = new StatusBar();
+    //setStatusBar(m_statusBar);
+
+//textEdit->textCursor().blockNumber()), textEdit->textCursor()->columnNumber()
+
+    //connect(textEdit, SIGNAL(cursorPosChanged(textEdit->textCursor().blockNumber(), textEdit->textCursor().columnNumber() )) ,
+    //        m_statusBar, SLOT(updateStatusBar(int, int)));
 }
 
 void MainWindow::readSettings()
@@ -300,4 +316,14 @@ void MainWindow::commitData(QSessionManager &manager)
             save();
     }
 }
+
+void MainWindow::updateStatusBar() //
+{
+    int lineNumber = textEdit->textCursor().blockNumber() + 1;
+    int columnNumber = textEdit->textCursor().columnNumber() + 1;
+    QString format = QString("%1%2%3%4").arg(LINE, QString::number(lineNumber), COLUMN, QString::number(columnNumber));
+
+    m_lineColumn->setText(format);
+}
+
 #endif

@@ -29,11 +29,14 @@ public:
 signals:
     void textChanged();
 
+    void cursorPosChanged(int, int);
 
 private:
 
 
 };
+
+
 
 #endif // EDITORMODULE_H
 

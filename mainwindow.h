@@ -22,10 +22,16 @@ private:
 #include <QMainWindow>
 
 class EditorModule;
+class StatusBar;
 class QAction;
 class QMenu;
 class QPlainTextEdit;
 class QSessionManager;
+class QLabel;
+
+ const QString LINE = "Line: ";
+ const QString COLUMN = ", column: ";
+
 
 class MainWindow : public QMainWindow
 {
@@ -50,6 +56,8 @@ private slots:
     void commitData(QSessionManager &);
 #endif
 
+    void updateStatusBar();
+
 private:
     void createActions();
     void createStatusBar();
@@ -60,8 +68,11 @@ private:
     void setCurrentFile(const QString &fileName);
     QString strippedName(const QString &fullFileName);
 
+
     //QPlainTextEdit *textEdit;
-    EditorModule* textEdit;
+    EditorModule*   textEdit;
+    QLabel*         m_lineColumn;
+    //StatusBar*      m_statusBar;
 
     QString curFile;
 };
