@@ -30,7 +30,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #Application version
 VERSION_MAJOR = 0
 VERSION_MINOR = 1
-VERSION_BUILD = 10
+VERSION_BUILD = 15
 
 DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
        "VERSION_MINOR=$$VERSION_MINOR"\

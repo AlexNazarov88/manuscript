@@ -72,9 +72,13 @@ private:
     //QPlainTextEdit *textEdit;
     EditorModule*   textEdit;
     QLabel*         m_lineColumn;
+    QLabel*         m_selection;
+    QLabel*         m_filetype;
+
     //StatusBar*      m_statusBar;
 
     QString curFile;
+    QString fileType;
 };
 
 #endif // MAINWINDOW_H

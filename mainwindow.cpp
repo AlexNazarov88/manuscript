@@ -1,7 +1,7 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 #include "editormodule.h"
-#include "statusbar.h"
+
 
 MainWindow::MainWindow()
     : textEdit(new EditorModule)
@@ -16,6 +16,7 @@ MainWindow::MainWindow()
     connect(textEdit->document(), &QTextDocument::contentsChanged,
             this, &MainWindow::documentWasModified);
     connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(updateStatusBar() ));
+    connect(textEdit, SIGNAL(selectionChanged()), this, SLOT(updateStatusBar() ));
 
 #ifndef QT_NO_SESSIONMANAGER
     QGuiApplication::setFallbackSessionManagementEnabled(false);
@@ -184,10 +185,12 @@ void MainWindow::createActions()
 
 void MainWindow::createStatusBar() // to do
 {
-    m_lineColumn= new QLabel();
+    m_lineColumn = new QLabel();
+    m_selection = new QLabel();
 
-    statusBar()->insertWidget(0, m_lineColumn, 1);
-
+    statusBar()->addWidget(m_lineColumn); //
+    statusBar()->addWidget(m_selection); //
+   // m_selection->hide();
 
     emit textEdit->cursorPositionChanged();
     //statusBar()->showMessage(tr("Ready"));
@@ -195,9 +198,6 @@ void MainWindow::createStatusBar() // to do
     //setStatusBar(m_statusBar);
 
 //textEdit->textCursor().blockNumber()), textEdit->textCursor()->columnNumber()
-
-    //connect(textEdit, SIGNAL(cursorPosChanged(textEdit->textCursor().blockNumber(), textEdit->textCursor().columnNumber() )) ,
-    //        m_statusBar, SLOT(updateStatusBar(int, int)));
 }
 
 void MainWindow::readSettings()
@@ -288,7 +288,7 @@ bool MainWindow::saveFile(const QString &fileName)
     return true;
 }
 
-void MainWindow::setCurrentFile(const QString &fileName)
+void MainWindow::setCurrentFile(const QString &fileName) //
 {
     curFile = fileName;
     textEdit->document()->setModified(false);
@@ -300,7 +300,7 @@ void MainWindow::setCurrentFile(const QString &fileName)
     setWindowFilePath(shownName + " - Manuscript");
 }
 
-QString MainWindow::strippedName(const QString &fullFileName)
+QString MainWindow::strippedName(const QString &fullFileName) //
 {
     return QFileInfo(fullFileName).fileName();
 }
@@ -321,9 +321,19 @@ void MainWindow::updateStatusBar() //
 {
     int lineNumber = textEdit->textCursor().blockNumber() + 1;
     int columnNumber = textEdit->textCursor().columnNumber() + 1;
-    QString format = QString("%1%2%3%4").arg(LINE, QString::number(lineNumber), COLUMN, QString::number(columnNumber));
 
-    m_lineColumn->setText(format);
+    QString lineColumnFormat = QString("%1%2%3%4").arg(LINE, QString::number(lineNumber), COLUMN, QString::number(columnNumber));
+    m_lineColumn->setText(lineColumnFormat);
+
+    if(textEdit->textCursor().hasSelection())
+    {
+        QString selection = textEdit->textCursor().selectedText();
+        QString selectionFormat = QString("%1%2").arg("Sel: ", QString::number(selection.size()));
+        m_selection->setText(selectionFormat);
+    } else {
+        QString selectionFormat = QString("%1%2").arg("Sel: ", QString::number(0));
+        m_selection->setText(selectionFormat);
+    }
 }
 
 #endif
