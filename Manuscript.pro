@@ -1,18 +1,23 @@
 TEMPLATE = app
 # quickcontrols2 quick qml
 QT += widgets uitools
+include(libs/FakeVim/fakevim/fakevim.pri)
 
 CONFIG += c++11
 
 FORMS +=
 
 HEADERS += \
-    editormodule.h \
-    mainwindow.h
+    mainwindow.h \
+    editor.h \
+    core.h
+
 
 SOURCES += main.cpp \
     editormodule.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    core.cpp
+
 
 RESOURCES += \
     app_res.qrc
@@ -43,4 +48,8 @@ VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}.$${VERSION_BUILD}
 RC_ICONS1 = icons/scroll.ico
 
 #DISTFILES +=
+
+SUBDIRS += \
+    fakevim
+
 

@@ -29,8 +29,8 @@ class QPlainTextEdit;
 class QSessionManager;
 class QLabel;
 
- const QString LINE = "Line: ";
- const QString COLUMN = ", column: ";
+ //const QString LINE = "Line: ";
+ //const QString COLUMN = ", column: ";
 
 
 class MainWindow : public QMainWindow
@@ -40,45 +40,47 @@ class MainWindow : public QMainWindow
 public:
     MainWindow();
 
-    void loadFile(const QString &fileName);
+    //void loadFile(const QString &fileName);
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    //void closeEvent(QCloseEvent *event) override;
 
 private slots:
+    /*
     void newFile();
     void open();
     bool save();
     bool saveAs();
+    */
     void about();
-    void documentWasModified();
+    //void documentWasModified();
 #ifndef QT_NO_SESSIONMANAGER
-    void commitData(QSessionManager &);
+    //void commitData(QSessionManager &);
 #endif
 
-    void updateStatusBar();
+    //void updateStatusBar();
 
 private:
     void createActions();
     void createStatusBar();
     void readSettings();
     void writeSettings();
-    bool maybeSave();
-    bool saveFile(const QString &fileName);
-    void setCurrentFile(const QString &fileName);
-    QString strippedName(const QString &fullFileName);
+    //bool maybeSave();
+    //bool saveFile(const QString &fileName);
+    //void setCurrentFile(const QString &fileName);
+    //QString strippedName(const QString &fullFileName);
 
 
     //QPlainTextEdit *textEdit;
-    EditorModule*   textEdit;
-    QLabel*         m_lineColumn;
-    QLabel*         m_selection;
-    QLabel*         m_filetype;
+    //EditorModule*   textEdit;
+    //QLabel*         m_lineColumn;
+    //QLabel*         m_selection;
+    //QLabel*         m_filetype;
 
     //StatusBar*      m_statusBar;
 
-    QString curFile;
-    QString fileType;
+    //QString curFile;
+    //QString fileType;
 };
 
 #endif // MAINWINDOW_H

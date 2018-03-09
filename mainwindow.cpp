@@ -1,35 +1,36 @@
 #include <QtWidgets>
 #include "mainwindow.h"
-#include "editormodule.h"
+//#include "editor.h"
 
 
 MainWindow::MainWindow()
-    : textEdit(new EditorModule)
+    //: textEdit(new EditorModule)
 {
-    setCentralWidget(textEdit);
+    //setCentralWidget(textEdit);
 
     createActions();
     //createStatusBar();
 
-    readSettings();
+    //readSettings();
 
-    connect(textEdit->document(), &QTextDocument::contentsChanged,
-            this, &MainWindow::documentWasModified);
-    connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(updateStatusBar() ));
-    connect(textEdit, SIGNAL(selectionChanged()), this, SLOT(updateStatusBar() ));
-
+    //connect(textEdit->document(), &QTextDocument::contentsChanged,
+    //        this, &MainWindow::documentWasModified);
+    //connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(updateStatusBar() ));
+    //connect(textEdit, SIGNAL(selectionChanged()), this, SLOT(updateStatusBar() ));
+/*
 #ifndef QT_NO_SESSIONMANAGER
     QGuiApplication::setFallbackSessionManagementEnabled(false);
     connect(qApp, &QGuiApplication::commitDataRequest,
             this, &MainWindow::commitData);
 #endif
+*/
+    //createStatusBar();
 
-    createStatusBar();
-
-    setCurrentFile(QString());
+    //setCurrentFile(QString());
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
+/*
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     if (maybeSave()) {
@@ -76,6 +77,7 @@ bool MainWindow::saveAs()
     return saveFile(dialog.selectedFiles().first());
 }
 
+*/
 void MainWindow::about()
 {
    QMessageBox::about(this, tr("About Manuscript"),
@@ -83,21 +85,22 @@ void MainWindow::about()
                "yet efficient tools to do text (code) editing."));
 }
 
+/*
 void MainWindow::documentWasModified()
 {
     setWindowModified(textEdit->document()->isModified());
 }
-
+*/
 void MainWindow::createActions()
 {
-
+    /*
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     //QToolBar *fileToolBar = addToolBar(tr("File"));
     const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
     QAction *newAct = new QAction(newIcon, tr("&New"), this);
     newAct->setShortcuts(QKeySequence::New);
     newAct->setStatusTip(tr("Create a new file"));
-    connect(newAct, &QAction::triggered, this, &MainWindow::newFile);
+    //connect(newAct, &QAction::triggered, this, &MainWindow::newFile);
     fileMenu->addAction(newAct);
     //fileToolBar->addAction(newAct);
 
@@ -105,7 +108,7 @@ void MainWindow::createActions()
     QAction *openAct = new QAction(openIcon, tr("&Open..."), this);
     openAct->setShortcuts(QKeySequence::Open);
     openAct->setStatusTip(tr("Open an existing file"));
-    connect(openAct, &QAction::triggered, this, &MainWindow::open);
+    //connect(openAct, &QAction::triggered, this, &MainWindow::open);
     fileMenu->addAction(openAct);
     //fileToolBar->addAction(openAct);
 
@@ -113,14 +116,14 @@ void MainWindow::createActions()
     QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
     saveAct->setShortcuts(QKeySequence::Save);
     saveAct->setStatusTip(tr("Save the document to disk"));
-    connect(saveAct, &QAction::triggered, this, &MainWindow::save);
+    //connect(saveAct, &QAction::triggered, this, &MainWindow::save);
     fileMenu->addAction(saveAct);
     //fileToolBar->addAction(saveAct);
 
-    const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
-    QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &MainWindow::saveAs);
-    saveAsAct->setShortcuts(QKeySequence::SaveAs);
-    saveAsAct->setStatusTip(tr("Save the document under a new name"));
+    //const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
+    //QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &MainWindow::saveAs);
+    //saveAsAct->setShortcuts(QKeySequence::SaveAs);
+    //saveAsAct->setStatusTip(tr("Save the document under a new name"));
 
 
     fileMenu->addSeparator();
@@ -181,24 +184,26 @@ void MainWindow::createActions()
     connect(textEdit, &QPlainTextEdit::copyAvailable, copyAct, &QAction::setEnabled);
 #endif // !QT_NO_CLIPBOARD
 
+*/
 }
 
 void MainWindow::createStatusBar() // to do
 {
-    m_lineColumn = new QLabel();
-    m_selection = new QLabel();
+    //m_lineColumn = new QLabel();
+   // m_selection = new QLabel();
 
-    statusBar()->addWidget(m_lineColumn); //
-    statusBar()->addWidget(m_selection); //
+    //statusBar()->addWidget(m_lineColumn); //
+    //statusBar()->addWidget(m_selection); //
    // m_selection->hide();
 
-    emit textEdit->cursorPositionChanged();
+    //emit textEdit->cursorPositionChanged();
     //statusBar()->showMessage(tr("Ready"));
     //m_statusBar = new StatusBar();
     //setStatusBar(m_statusBar);
 
 //textEdit->textCursor().blockNumber()), textEdit->textCursor()->columnNumber()
 }
+
 
 void MainWindow::readSettings()
 {
@@ -220,6 +225,7 @@ void MainWindow::writeSettings()
     settings.setValue("geometry", saveGeometry());
 }
 
+/*
 bool MainWindow::maybeSave()
 {
     if (!textEdit->document()->isModified())
@@ -336,4 +342,4 @@ void MainWindow::updateStatusBar() //
     }
 }
 
-#endif
+*/

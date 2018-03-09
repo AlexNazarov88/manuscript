@@ -1,13 +1,45 @@
-#include "editormodule.h"
-#include "QDebug"
-
-EditorModule::EditorModule(QWidget *parent) :
+//#include "editormodule.h"
+//#include "QDebug"
+/*
+Editor::Editor(QWidget *parent) :
     QPlainTextEdit(parent)
 {
-
-
+    TextEdit::setCursorWidth(0);
 }
 
+
+void EditorModule::paintEvent(QPaintEvent *e)
+{
+    TextEdit::paintEvent(e);
+
+    if ( !m_cursorRect.isNull() && e->rect().intersects(m_cursorRect) ) {
+        QRect rect = m_cursorRect;
+        m_cursorRect = QRect();
+        TextEdit::viewport()->update(rect);
+    }
+
+    // Draw text cursor.
+    QRect rect = TextEdit::cursorRect();
+    if ( e->rect().intersects(rect) ) {
+        QPainter painter(TextEdit::viewport());
+
+        if ( TextEdit::overwriteMode() ) {
+            QFontMetrics fm(TextEdit::font());
+            const int position = TextEdit::textCursor().position();
+            const QChar c = TextEdit::document()->characterAt(position);
+            rect.setWidth(fm.width(c));
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(TextEdit::palette().color(QPalette::Base));
+            painter.setCompositionMode(QPainter::CompositionMode_Difference);
+        } else {
+            rect.setWidth(TextEdit::cursorWidth());
+            painter.setPen(TextEdit::palette().color(QPalette::Text));
+        }
+
+        painter.drawRect(rect);
+        m_cursorRect = rect;
+    }
+}
 /*
 QString         EditorModule::text() const       { return m_edit->toPlainText(); }
 //QTextDocument*  EditorModule::document() const   { return m_doc; m_edit->document();
