@@ -1,3 +1,4 @@
+#include <QtWidgets>
 #include <QApplication>
 #include <QFontMetrics>
 #include <QMainWindow>
@@ -10,6 +11,7 @@
 #include <QTextStream>
 #include <QTemporaryFile>
 #include <QTimer>
+#include <QFileDialog>
 
 #include "core.h"
 #include "mainwindow.h"
@@ -94,6 +96,10 @@ void Core::updateStatusBar()
     m_mainWindow->statusBar()->showMessage(msg);
 }
 
+//bool wantOpen(const ExCommand &cmd);
+//bool wantNew(const ExCommand &cmd);
+//bool wantSaveAs(const ExCommand &cmd);
+
 void Core::handleExCommand(bool *handled, const ExCommand &cmd)
 {
     if ( wantSaveAndQuit(cmd) ) {
@@ -102,6 +108,16 @@ void Core::handleExCommand(bool *handled, const ExCommand &cmd)
             cancel();
     } else if ( wantSave(cmd) ) {
         save(); // :w
+
+    } else if ( wantOpen(cmd) ) {
+        open(); // :e
+
+    } else if ( wantNew(cmd) ) {
+        newFile(); // :enew
+
+    } else if ( wantSaveAs(cmd) ) {
+        saveAs(); // :sav
+
     } else if ( wantQuit(cmd) ) {
         if (cmd.hasBang)
             invalidate(); // :q!
@@ -196,12 +212,13 @@ void Core::requestHasBlockSelection(bool *on)
 }
 
 //private slots
-void Core::parseArguments()
+void Core::parseArguments() // needs improving
 {
     QStringList args = qApp->arguments();
 
     //const QString editFileName = args.value(1, QString(_("/usr/share/vim/vim74/tutor/tutor"))); //
-    //openFile(editFileName);
+    const QString editFileName = args.value(1); //
+    openFile(editFileName);
 
     foreach (const QString &cmd, args.mid(2))
         emit handleInput(cmd);
@@ -230,6 +247,21 @@ bool Core::wantQuit(const ExCommand &cmd)
     return cmd.matches("q", "quit") || cmd.matches("qa", "qall");
 }
 
+bool Core::wantOpen(const ExCommand &cmd)
+{
+    return cmd.cmd == "e";
+}
+
+bool Core::wantNew(const ExCommand &cmd)
+{
+    return cmd.cmd == "enew";
+}
+
+bool Core::wantSaveAs(const ExCommand &cmd)
+{
+    return cmd.cmd == "sav";
+}
+
 bool Core::save() //
 {
     if (!hasChanges())
@@ -237,7 +269,7 @@ bool Core::save() //
 
     QTemporaryFile tmpFile;
     if (!tmpFile.open()) {
-        QMessageBox::critical(m_widget, tr("FakeVim Error"),
+        QMessageBox::critical(m_widget, tr("Manuscript Error"),
                               tr("Cannot create temporary file: %1").arg(tmpFile.errorString()));
         return false;
     }
@@ -248,7 +280,7 @@ bool Core::save() //
 
     QFile::remove(m_fileName);
     if (!QFile::copy(tmpFile.fileName(), m_fileName)) {
-        QMessageBox::critical(m_widget, tr("FakeVim Error"),
+        QMessageBox::critical(m_widget, tr("Manuscript Error"),
                               tr("Cannot write to file \"%1\"").arg(m_fileName));
         return false;
     }
@@ -259,7 +291,7 @@ bool Core::save() //
 void Core::cancel()
 {
     if (hasChanges()) {
-        QMessageBox::critical(m_widget, tr("FakeVim Warning"),
+        QMessageBox::critical(m_widget, tr("Manuscript Warning"),
                               tr("File \"%1\" was changed").arg(m_fileName));
     } else {
         invalidate();
@@ -284,6 +316,93 @@ bool Core::hasChanges()
     return content() != ts.readAll();
 }
 
+bool Core::open()//
+{
+
+    //if (maybeSave()) {
+        QString fileName = QFileDialog::getOpenFileName();
+        if (!fileName.isEmpty())
+            openFile(fileName);
+    //}
+}
+
+bool Core::saveAs() //
+{
+    QFileDialog dialog;
+    dialog.setWindowModality(Qt::WindowModal);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    if (dialog.exec() != QDialog::Accepted)
+        return false;
+    //return save();
+    return saveFile(dialog.selectedFiles().first());
+}
+
+bool Core::newFile() //
+{
+
+    //if (maybeSave()) {
+     //   document()->clear();
+     //   setCurrentFile(QString());
+    //}
+}
+
+/*
+bool Core::maybeSave()
+{
+    if (!textEdit->document()->isModified())
+        return true;
+    const QMessageBox::StandardButton ret
+        = QMessageBox::warning(this, tr("Save files - Manuscript"),
+                               tr("The document has been modified.\n"
+                                  "Do you want to save your changes?"),
+                               QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    switch (ret) {
+    case QMessageBox::Save:
+        return save();
+    case QMessageBox::Cancel:
+        return false;
+    default:
+        break;
+    }
+    return true;
+}
+
+
+void MainWindow::setCurrentFile(const QString &fileName) //
+{
+    curFile = fileName;
+    textEdit->document()->setModified(false);
+    setWindowModified(false);
+
+    QString shownName = curFile;
+    if (curFile.isEmpty())
+        shownName = "untitled";
+    setWindowFilePath(shownName + " - Manuscript");
+}
+
+
+*/
+bool Core::saveFile(const QString &fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QMessageBox::warning(m_mainWindow, tr("Manuscript"),
+                             tr("Cannot write file %1:\n%2.")
+                             .arg(QDir::toNativeSeparators(fileName),
+                                  file.errorString()));
+        return false;
+    }
+
+    QTextStream out(&file);
+
+    out << document()->toPlainText();
+    openFile(fileName);
+
+    return true;
+}
+
+
+
 QTextDocument *Core::document() const //
 {
     QTextDocument *doc = NULL;
@@ -297,6 +416,14 @@ QTextDocument *Core::document() const //
 QString Core::content() const
 {
     return document()->toPlainText();
+}
+
+void Core::setContent(QFile &file)  // needs test / not needed
+{
+    QTextStream ts(&file);
+
+    document()->setPlainText(ts.readAll());
+    ts.flush();
 }
 
 /*

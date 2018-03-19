@@ -1,0 +1,98 @@
+folders:
+
+modules
+    EditModule
+    MenuBarModule ?
+    StatusBarModule ?
+dialogs
+    FindDialog
+    ReplaceDialog
+    SettingsDialog
+    AboutDialog
+
+---------------------------------------------------------------
+------------------------Questionable---------------------------
+
+
+---------------------------------------------------------------
+###############################################################    
+* waiting to be set as milestones
+|0,1,2,3| major milestone
+1) 2) .... current tasks
++ done
+###############################################################
+
+1) incorrect app title, file modification appears like this:
+    filename - Manuscript*
+    
+2) Implement statusBar    
+    use this style:
+ -  |some message                |Line 1\1 | Col: 1 | filetype? | Отступ | UTF - 8|
+ -  |Line 1\1, column: 1 |                            |filetype? | UTF - 8| Syntax|
+    
+    void QTextDocument::cursorPositionChanged(const QTextCursor &cursor)
+    void QPlainTextEdit::cursorPositionChanged()
+
+* deal with app color and style
+* implement menu and submenus                
+    add menus from my notes   
+* impl settings saving in a file
+* impl for Status bar 
+* impl for menus slot
+*impl dialogs
+    - FindDialog
+    - ReplaceDialog
+    - SettingsDialog
+    - AboutDialog
+* fill changelog
+
+
+========================================================================
+void slotUndo()
+{
+    // mb needs improvement
+    if(textEdit->document()->isModified())
+       textEdit->undo();
+}
+
+void slotGetDateTime()
+{
+    QString str =  m_dateTime.currentDateTime().toString("hh:mm dd.MM.yyyy");
+    textEdit->insertPlainText(str);
+}
+
+void slotAbout() 
+{
+    QMessageBox::about(this, tr("About"), "Manuscript");
+}
+
+void slotChangeWindowTitle(const QString& str)
+{
+    setWindowTitle(str + " — Manuscript");
+}
+
+
+
+
+// deal with errors
+
+
+QFSFileEngine::open: No file name specified
+QIODevice::read (QFile, ""): device not open
+SOFT ASSERT: "!m_inFakeVim" in file ../Manuscript/libs/FakeVim/fakevim/fakevimhandler.cpp, line 2392
+enterFakeVim() shouldn't be called recursively!
+SOFT ASSERT: "m_inFakeVim" in file ../Manuscript/libs/FakeVim/fakevim/fakevimhandler.cpp, line 2410
+enterFakeVim() not called before leaveFakeVim()!
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -69,9 +69,9 @@ void initHandler(FakeVimHandler &handler)
     handler.setupWidget();
 }
 
-void initMainWindow(QMainWindow &mainWindow, QWidget *centralWidget, const QString &title)
+void initMainWindow(QMainWindow &mainWindow, QWidget *centralWidget)
 {
-    mainWindow.setWindowTitle(QString(_("FakeVim (%1)")).arg(title));
+    mainWindow.setWindowTitle(QString(_("Manuscript")));
     mainWindow.setCentralWidget(centralWidget);
     mainWindow.resize(600, 650);
     mainWindow.move(0, 0);
@@ -92,7 +92,12 @@ void clearUndoRedo(QWidget *editor)
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(app_res);
     QApplication app(argc, argv);
+
+    QString version = QString("Manuscript v%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_BUILD);
+    qDebug()<< version;
+    app.setWindowIcon(QIcon(":icons/scroll.ico"));
 
     QStringList args = app.arguments();
 
@@ -107,7 +112,7 @@ int main(int argc, char *argv[])
 
     // Create main window.
     MainWindow mainWindow;
-    initMainWindow(mainWindow, editor, usePlainTextEdit ? _("QPlainTextEdit") : _("QTextEdit"));
+    initMainWindow(mainWindow, editor);
 
     // Connect slots to FakeVimHandler signals.
     Core core(editor, &mainWindow);

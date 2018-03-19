@@ -15,6 +15,7 @@ class QTextBlock;
 class QTextStream;
 class QTemporaryFile;
 class QTimer;
+class QFile;
 
 
 typedef QLatin1String _;
@@ -75,13 +76,23 @@ private:
     bool wantSaveAndQuit(const ExCommand &cmd);
     bool wantSave(const ExCommand &cmd);
     bool wantQuit(const ExCommand &cmd);
+    bool wantOpen(const ExCommand &cmd);
+    bool wantNew(const ExCommand &cmd);
+    bool wantSaveAs(const ExCommand &cmd);
+
     bool save();
     void cancel();
     void invalidate();
     bool hasChanges();
+    bool open(); //
+    bool saveAs(); //
+    bool newFile(); //
+
+    bool saveFile(const QString &fileName); //
+
     QTextDocument *document() const;
     QString content() const;
-
+    void setContent(QFile &file);
 
     QWidget *m_widget;
     MainWindow *m_mainWindow;
