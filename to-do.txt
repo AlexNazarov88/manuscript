@@ -86,10 +86,26 @@ enterFakeVim() not called before leaveFakeVim()!
 
 
 
+bool m_inFakeVim; // true if currently processing a key press or a command
 
 
+Why <CR>?
+As many mappings invoke Ex commands (e.g. :w) and therefore have to switch from normal to command-line mode, they have to conclude the command with <Enter> (or <CR>), just as you would when manually typing the command.
 
 
+======= tests
+:w
+:e
+:enew
+:sav
+
+open() v
+saveAs() v
+newFile()  v
+ helper func maybeSave() - called by newFile() and open() v
+setCurrentFile()  x
+saveFile()  v
+loadFile()  v
 
 
 

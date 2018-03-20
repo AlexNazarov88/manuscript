@@ -87,8 +87,11 @@ private:
     bool open(); //
     bool saveAs(); //
     bool newFile(); //
-
+    void loadFile(const QString &fileName); //
     bool saveFile(const QString &fileName); //
+
+    bool maybeSave();
+    void setCurrentFile(const QString &fileName);
 
     QTextDocument *document() const;
     QString content() const;

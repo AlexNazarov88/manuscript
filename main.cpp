@@ -79,9 +79,13 @@ void initMainWindow(QMainWindow &mainWindow, QWidget *centralWidget)
 
     // Set monospace font for editor and status bar.
     QFont font = QApplication::font();
-    font.setFamily(_("Monospace"));
+    //font.setFamily(_("Monospace"));
+    font.setFamily(_("Fixedsys"));
+    //font.setPointSize(9);
     centralWidget->setFont(font);
     mainWindow.statusBar()->setFont(font);
+
+
 }
 
 void clearUndoRedo(QWidget *editor)

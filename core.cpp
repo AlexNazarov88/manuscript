@@ -23,9 +23,15 @@ Core::Core(QWidget *widget, QMainWindow *mw, QObject *parent = 0)
     QTimer::singleShot(0, this, SLOT(parseArguments()));
 }
 */
-void Core::openFile(const QString &fileName)
+
+
+// connect(textEdit->document(), &QTextDocument::contentsChanged,
+//        this, &MainWindow::documentWasModified);
+
+void Core::openFile(const QString &fileName) //
 {
-    emit handleInput(QString(_(":r %1<CR>")).arg(fileName));
+    //emit handleInput(QString(_(":r %1<CR>")).arg(fileName));
+
     m_fileName = fileName;
 }
 
@@ -95,10 +101,6 @@ void Core::updateStatusBar()
     QString msg = m_statusMessage + QString(slack, QLatin1Char(' ')) + m_statusData;
     m_mainWindow->statusBar()->showMessage(msg);
 }
-
-//bool wantOpen(const ExCommand &cmd);
-//bool wantNew(const ExCommand &cmd);
-//bool wantSaveAs(const ExCommand &cmd);
 
 void Core::handleExCommand(bool *handled, const ExCommand &cmd)
 {
@@ -262,7 +264,7 @@ bool Core::wantSaveAs(const ExCommand &cmd)
     return cmd.cmd == "sav";
 }
 
-bool Core::save() //
+bool Core::save() // needs redirection in case file is not created (to saveAs()) / needs redo
 {
     if (!hasChanges())
         return true;
@@ -319,11 +321,11 @@ bool Core::hasChanges()
 bool Core::open()//
 {
 
-    //if (maybeSave()) {
+    if (maybeSave()) {
         QString fileName = QFileDialog::getOpenFileName();
         if (!fileName.isEmpty())
-            openFile(fileName);
-    //}
+            loadFile(fileName);
+    }
 }
 
 bool Core::saveAs() //
@@ -333,26 +335,26 @@ bool Core::saveAs() //
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     if (dialog.exec() != QDialog::Accepted)
         return false;
-    //return save();
+
     return saveFile(dialog.selectedFiles().first());
 }
 
 bool Core::newFile() //
 {
 
-    //if (maybeSave()) {
-     //   document()->clear();
-     //   setCurrentFile(QString());
-    //}
+    if (maybeSave()) {
+        document()->clear();
+        setCurrentFile(QString());
+    }
 }
 
-/*
-bool Core::maybeSave()
+
+bool Core::maybeSave() //
 {
-    if (!textEdit->document()->isModified())
+    if (!document()->isModified())
         return true;
     const QMessageBox::StandardButton ret
-        = QMessageBox::warning(this, tr("Save files - Manuscript"),
+        = QMessageBox::warning(m_mainWindow, tr("Save files - Manuscript"),
                                tr("The document has been modified.\n"
                                   "Do you want to save your changes?"),
                                QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
@@ -368,21 +370,22 @@ bool Core::maybeSave()
 }
 
 
-void MainWindow::setCurrentFile(const QString &fileName) //
+void Core::setCurrentFile(const QString &fileName) // -----
 {
-    curFile = fileName;
-    textEdit->document()->setModified(false);
-    setWindowModified(false);
+    m_fileName = fileName;
+    document()->setModified(false);
+    m_mainWindow->setWindowModified(false); //
 
-    QString shownName = curFile;
-    if (curFile.isEmpty())
+    QString shownName = m_fileName;
+    if (m_fileName.isEmpty())
         shownName = "untitled";
-    setWindowFilePath(shownName + " - Manuscript");
+    m_mainWindow->setWindowFilePath(shownName + " - Manuscript"); //
+    qDebug()<<"ended setCurrentFile";
 }
 
 
-*/
-bool Core::saveFile(const QString &fileName)
+
+bool Core::saveFile(const QString &fileName) // ----- supplement of save()
 {
     QFile file(fileName);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
@@ -396,12 +399,31 @@ bool Core::saveFile(const QString &fileName)
     QTextStream out(&file);
 
     out << document()->toPlainText();
-    openFile(fileName);
+
+    setCurrentFile(fileName);
+    //openFile(fileName); //
 
     return true;
 }
 
+void Core::loadFile(const QString &fileName) //
+{
+    //qDebug()<<"entered loadFile()";
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(m_mainWindow, tr("Manuscript"),
+                             tr("Cannot read file %1:\n%2.")
+                             .arg(QDir::toNativeSeparators(fileName), file.errorString()));
+        return;
+    }
 
+    QTextStream in(&file);
+
+    document()->setPlainText(in.readAll());
+    setCurrentFile(fileName);
+    //m_fileName = fileName;
+
+}
 
 QTextDocument *Core::document() const //
 {
