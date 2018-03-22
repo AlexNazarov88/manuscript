@@ -22,6 +22,7 @@ typedef QLatin1String _;
 
 using namespace FakeVim::Internal;
 
+// - questionable / has errors / yet to be tested
 
 #define EDITOR(editor, call) \
     if (QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(editor)) { \
@@ -36,22 +37,16 @@ class Core : public QObject
     Q_OBJECT
 
 public:
-    //Core(QWidget *widget, MainWindow *mw, QObject *parent);
 
-    Core(QWidget *widget, MainWindow *mw, QObject *parent = 0)
+    Core(QWidget *widget, MainWindow *mw, QObject *parent = 0)  // needs to go away from here to cpp file
       : QObject(parent), m_widget(widget), m_mainWindow(mw)
     {
-        QTimer::singleShot(0, this, SLOT(parseArguments()));
+        QTimer::singleShot(0, this, SLOT(parseArguments())); // ?
+        //setCurrentFile(QString()); //
     }
 
-    void openFile(const QString &fileName);
+    void openFile(const QString &fileName); //
 
-
-    //QWidget *createEditorWidget(bool usePlainTextEdit);
-
-    //void initHandler(FakeVimHandler &handler);
-    //void initMainWindow(MainWindow &mainWindow, QWidget *centralWidget, const QString &title);
-    //void clearUndoRedo(QWidget *editor);
 
 signals:
     void handleInput(const QString &keys);
@@ -69,7 +64,7 @@ public slots:
     void requestHasBlockSelection(bool *on);
 
 private slots:
-    void parseArguments();
+    void parseArguments(); //
 
 private:
     void updateExtraSelections();
@@ -80,7 +75,8 @@ private:
     bool wantNew(const ExCommand &cmd);
     bool wantSaveAs(const ExCommand &cmd);
 
-    bool save();
+    //
+    bool save(); //
     void cancel();
     void invalidate();
     bool hasChanges();
@@ -90,12 +86,13 @@ private:
     void loadFile(const QString &fileName); //
     bool saveFile(const QString &fileName); //
 
-    bool maybeSave();
-    void setCurrentFile(const QString &fileName);
+    bool maybeSave(); //
+    void setCurrentFile(const QString &fileName); //
+    //
 
     QTextDocument *document() const;
     QString content() const;
-    void setContent(QFile &file);
+    void setContent(QFile &file); //
 
     QWidget *m_widget;
     MainWindow *m_mainWindow;

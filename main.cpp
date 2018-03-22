@@ -48,6 +48,14 @@ QWidget *createEditorWidget(bool usePlainTextEdit)
     editor->setObjectName(_("Editor"));
     editor->setFocus();
 
+    //
+    QFont font;
+    font.setFamily(_("Fixedsys"));
+    //font.setFamily(_("Fixedsys"));
+    font.setPointSize(9);
+    editor->setFont(font);
+    //
+
     return editor;
 }
 
@@ -71,16 +79,16 @@ void initHandler(FakeVimHandler &handler)
 
 void initMainWindow(QMainWindow &mainWindow, QWidget *centralWidget)
 {
-    mainWindow.setWindowTitle(QString(_("Manuscript")));
+    //mainWindow.setWindowTitle(QString(_("Manuscript"))); //
     mainWindow.setCentralWidget(centralWidget);
     mainWindow.resize(600, 650);
     mainWindow.move(0, 0);
     mainWindow.show();
 
     // Set monospace font for editor and status bar.
-    QFont font = QApplication::font();
-    //font.setFamily(_("Monospace"));
-    font.setFamily(_("Fixedsys"));
+    QFont font = QApplication::font(); //
+    font.setFamily(_("Monospace"));
+    //font.setFamily(_("Fixedsys"));
     //font.setPointSize(9);
     centralWidget->setFont(font);
     mainWindow.statusBar()->setFont(font);
@@ -120,7 +128,7 @@ int main(int argc, char *argv[])
 
     // Connect slots to FakeVimHandler signals.
     Core core(editor, &mainWindow);
-    connectSignals(handler, core); //
+    connectSignals(handler, core);
 
     // Initialize FakeVimHandler.
     initHandler(handler); //

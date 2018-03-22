@@ -3657,7 +3657,7 @@ void FakeVimHandler::Private::updateMiniBuffer()
         messageLevel = MessageShowCmd;
     } else if (g.mode == CommandMode && isVisualMode()) {
         if (isVisualCharMode())
-            msg = "-- VISUAL --";
+            msg = "-- VISUAL -->";
         else if (isVisualLineMode())
             msg = "-- VISUAL LINE --";
         else if (isVisualBlockMode())
@@ -3681,7 +3681,7 @@ void FakeVimHandler::Private::updateMiniBuffer()
     }
 
     if (g.isRecording && msg.startsWith("--"))
-        msg.append(' ').append("Recording");
+        msg.append(' ').append("</b>Recording</b>");
 
     emit q->commandBufferChanged(msg, cursorPos, anchorPos, messageLevel, q);
 

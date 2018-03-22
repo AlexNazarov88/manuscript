@@ -25,12 +25,10 @@ Core::Core(QWidget *widget, QMainWindow *mw, QObject *parent = 0)
 */
 
 
-// connect(textEdit->document(), &QTextDocument::contentsChanged,
-//        this, &MainWindow::documentWasModified);
 
 void Core::openFile(const QString &fileName) //
 {
-    //emit handleInput(QString(_(":r %1<CR>")).arg(fileName));
+    //emit handleInput(QString(_(":r %1<CR>")).arg(fileName)); // not working well with other functions
 
     m_fileName = fileName;
 }
@@ -110,16 +108,12 @@ void Core::handleExCommand(bool *handled, const ExCommand &cmd)
             cancel();
     } else if ( wantSave(cmd) ) {
         save(); // :w
-
     } else if ( wantOpen(cmd) ) {
         open(); // :e
-
     } else if ( wantNew(cmd) ) {
         newFile(); // :enew
-
     } else if ( wantSaveAs(cmd) ) {
         saveAs(); // :sav
-
     } else if ( wantQuit(cmd) ) {
         if (cmd.hasBang)
             invalidate(); // :q!
@@ -213,6 +207,7 @@ void Core::requestHasBlockSelection(bool *on)
     *on = !m_blockSelection.isEmpty();
 }
 
+
 //private slots
 void Core::parseArguments() // needs improving
 {
@@ -220,9 +215,15 @@ void Core::parseArguments() // needs improving
 
     //const QString editFileName = args.value(1, QString(_("/usr/share/vim/vim74/tutor/tutor"))); //
     const QString editFileName = args.value(1); //
-    openFile(editFileName);
+    //openFile(editFileName);
 
-    foreach (const QString &cmd, args.mid(2))
+    if (!editFileName.isEmpty()) { //
+        loadFile(editFileName);
+    } else {
+        setCurrentFile(QString());
+    }
+
+    foreach (const QString &cmd, args.mid(2)) // ?
         emit handleInput(cmd);
 }
 
@@ -341,7 +342,6 @@ bool Core::saveAs() //
 
 bool Core::newFile() //
 {
-
     if (maybeSave()) {
         document()->clear();
         setCurrentFile(QString());
@@ -408,7 +408,7 @@ bool Core::saveFile(const QString &fileName) // ----- supplement of save()
 
 void Core::loadFile(const QString &fileName) //
 {
-    //qDebug()<<"entered loadFile()";
+    qDebug()<<"entered loadFile()";
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
         QMessageBox::warning(m_mainWindow, tr("Manuscript"),
@@ -447,62 +447,3 @@ void Core::setContent(QFile &file)  // needs test / not needed
     document()->setPlainText(ts.readAll());
     ts.flush();
 }
-
-/*
-QWidget *createEditorWidget(bool usePlainTextEdit)
-{
-    QWidget *editor = 0;
-    if (usePlainTextEdit) {
-        Editor<QPlainTextEdit> *w = new Editor<QPlainTextEdit>;
-        w->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        editor = w;
-    } else {
-        Editor<QTextEdit> *w = new Editor<QTextEdit>;
-        w->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        editor = w;
-    }
-    editor->setObjectName(_("Editor"));
-    editor->setFocus();
-
-    return editor;
-}
-
-void Core::initHandler(FakeVimHandler &handler)
-{
-    handler.handleCommand(_("set nopasskeys"));
-    handler.handleCommand(_("set nopasscontrolkey"));
-
-    // Set some Vim options.
-    handler.handleCommand(_("set expandtab"));
-    handler.handleCommand(_("set shiftwidth=8"));
-    handler.handleCommand(_("set tabstop=16"));
-    handler.handleCommand(_("set autoindent"));
-
-    // Try to source file "fakevimrc" from current directory.
-    handler.handleCommand(_("source fakevimrc"));
-
-    handler.installEventFilter();
-    handler.setupWidget();
-}
-
-void Core::initMainWindow(QMainWindow &mainWindow, QWidget *centralWidget, const QString &title)
-{
-    mainWindow.setWindowTitle(QString(_("FakeVim (%1)")).arg(title));
-    mainWindow.setCentralWidget(centralWidget);
-    mainWindow.resize(600, 650);
-    mainWindow.move(0, 0);
-    mainWindow.show();
-
-    // Set monospace font for editor and status bar.
-    QFont font = QApplication::font();
-    font.setFamily(_("Monospace"));
-    centralWidget->setFont(font);
-    mainWindow.statusBar()->setFont(font);
-}
-
-void Core::clearUndoRedo(QWidget *editor)
-{
-    EDITOR(editor, setUndoRedoEnabled(false));
-    EDITOR(editor, setUndoRedoEnabled(true));
-}
-*/
