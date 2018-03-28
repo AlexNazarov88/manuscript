@@ -29,10 +29,6 @@ class QPlainTextEdit;
 class QSessionManager;
 class QLabel;
 
- //const QString LINE = "Line: ";
- //const QString COLUMN = ", column: ";
-
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

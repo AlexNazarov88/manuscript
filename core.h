@@ -45,7 +45,7 @@ public:
         //setCurrentFile(QString()); //
     }
 
-    void openFile(const QString &fileName); //
+    void openFile(const QString &fileName); // deprecated
 
 
 signals:
@@ -76,7 +76,7 @@ private:
     bool wantSaveAs(const ExCommand &cmd);
 
     //
-    bool save(); //
+    bool save(); // deprecated
     void cancel();
     void invalidate();
     bool hasChanges();
@@ -92,7 +92,6 @@ private:
 
     QTextDocument *document() const;
     QString content() const;
-    void setContent(QFile &file); //
 
     QWidget *m_widget;
     MainWindow *m_mainWindow;

@@ -81,7 +81,7 @@ void initMainWindow(QMainWindow &mainWindow, QWidget *centralWidget)
 {
     //mainWindow.setWindowTitle(QString(_("Manuscript"))); //
     mainWindow.setCentralWidget(centralWidget);
-    mainWindow.resize(600, 650);
+    mainWindow.resize(600, 650); //
     mainWindow.move(0, 0);
     mainWindow.show();
 
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     bool usePlainTextEdit = qgetenv("FAKEVIM_PLAIN_TEXT_EDIT") == "1";
 
     // Create editor widget.
-    QWidget *editor = createEditorWidget(usePlainTextEdit); //
+    QWidget *editor = createEditorWidget(usePlainTextEdit);
 
     // Create FakeVimHandler instance which will emulate Vim behavior in editor widget.
     FakeVimHandler handler(editor, 0);
@@ -131,10 +131,10 @@ int main(int argc, char *argv[])
     connectSignals(handler, core);
 
     // Initialize FakeVimHandler.
-    initHandler(handler); //
+    initHandler(handler);
 
     // Clear undo and redo queues.
-    clearUndoRedo(editor); //
+    clearUndoRedo(editor);
 
     return app.exec();
 }

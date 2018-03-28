@@ -26,7 +26,7 @@ Core::Core(QWidget *widget, QMainWindow *mw, QObject *parent = 0)
 
 
 
-void Core::openFile(const QString &fileName) //
+void Core::openFile(const QString &fileName) // currently replaced by loadFile()
 {
     //emit handleInput(QString(_(":r %1<CR>")).arg(fileName)); // not working well with other functions
 
@@ -100,7 +100,7 @@ void Core::updateStatusBar()
     m_mainWindow->statusBar()->showMessage(msg);
 }
 
-void Core::handleExCommand(bool *handled, const ExCommand &cmd)
+void Core::handleExCommand(bool *handled, const ExCommand &cmd) // save() -> saveFile()?
 {
     if ( wantSaveAndQuit(cmd) ) {
         // :wq
@@ -223,7 +223,7 @@ void Core::parseArguments() // needs improving
         setCurrentFile(QString());
     }
 
-    foreach (const QString &cmd, args.mid(2)) // ?
+    foreach (const QString &cmd, args.mid(2)) //
         emit handleInput(cmd);
 }
 
@@ -265,7 +265,7 @@ bool Core::wantSaveAs(const ExCommand &cmd)
     return cmd.cmd == "sav";
 }
 
-bool Core::save() // needs redirection in case file is not created (to saveAs()) / needs redo
+bool Core::save() // needs redirection in case file is not created (to saveAs()) / replaced by saveFile()
 {
     if (!hasChanges())
         return true;
@@ -291,7 +291,7 @@ bool Core::save() // needs redirection in case file is not created (to saveAs())
     return true;
 }
 
-void Core::cancel()
+void Core::cancel() // test
 {
     if (hasChanges()) {
         QMessageBox::critical(m_widget, tr("Manuscript Warning"),
@@ -306,7 +306,7 @@ void Core::invalidate()
     QApplication::quit();
 }
 
-bool Core::hasChanges()
+bool Core::hasChanges() // test
 {
     if (m_fileName.isEmpty() && content().isEmpty())
         return false;
@@ -321,12 +321,13 @@ bool Core::hasChanges()
 
 bool Core::open()//
 {
-
     if (maybeSave()) {
         QString fileName = QFileDialog::getOpenFileName();
         if (!fileName.isEmpty())
             loadFile(fileName);
+        return true;
     }
+    //add error msg
 }
 
 bool Core::saveAs() //
@@ -338,6 +339,7 @@ bool Core::saveAs() //
         return false;
 
     return saveFile(dialog.selectedFiles().first());
+    // add msg
 }
 
 bool Core::newFile() //
@@ -345,14 +347,16 @@ bool Core::newFile() //
     if (maybeSave()) {
         document()->clear();
         setCurrentFile(QString());
+        return true;
     }
+    // add error if file couldnt be created
 }
 
 
 bool Core::maybeSave() //
 {
     if (!document()->isModified())
-        return true;
+        return true; // document wasnt modified
     const QMessageBox::StandardButton ret
         = QMessageBox::warning(m_mainWindow, tr("Save files - Manuscript"),
                                tr("The document has been modified.\n"
@@ -370,7 +374,7 @@ bool Core::maybeSave() //
 }
 
 
-void Core::setCurrentFile(const QString &fileName) // -----
+void Core::setCurrentFile(const QString &fileName) //
 {
     m_fileName = fileName;
     document()->setModified(false);
@@ -379,13 +383,13 @@ void Core::setCurrentFile(const QString &fileName) // -----
     QString shownName = m_fileName;
     if (m_fileName.isEmpty())
         shownName = "untitled";
-    m_mainWindow->setWindowFilePath(shownName + " - Manuscript"); //
+    m_mainWindow->setWindowFilePath(shownName + " - Manuscript"); // only for Windows?
     qDebug()<<"ended setCurrentFile";
 }
 
 
 
-bool Core::saveFile(const QString &fileName) // ----- supplement of save()
+bool Core::saveFile(const QString &fileName) // replacer / supplement of save()
 {
     QFile file(fileName);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
@@ -440,10 +444,9 @@ QString Core::content() const
     return document()->toPlainText();
 }
 
-void Core::setContent(QFile &file)  // needs test / not needed
+/*
+void Core::documentWasModified()
 {
-    QTextStream ts(&file);
-
-    document()->setPlainText(ts.readAll());
-    ts.flush();
+    setWindowModified(textEdit->document()->isModified());
 }
+*/
