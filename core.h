@@ -19,6 +19,7 @@ class QFile;
 
 
 typedef QLatin1String _;
+const QString appName = " - Manuscript";
 
 using namespace FakeVim::Internal;
 
@@ -38,11 +39,14 @@ class Core : public QObject
 
 public:
 
+
     Core(QWidget *widget, MainWindow *mw, QObject *parent = 0)  // needs to go away from here to cpp file
       : QObject(parent), m_widget(widget), m_mainWindow(mw)
     {
         QTimer::singleShot(0, this, SLOT(parseArguments())); // ?
         //setCurrentFile(QString()); //
+
+        connect(document(), &QTextDocument::contentsChanged, this, &Core::documentWasModified);
     }
 
     void openFile(const QString &fileName); // deprecated
@@ -65,6 +69,7 @@ public slots:
 
 private slots:
     void parseArguments(); //
+    void documentWasModified();
 
 private:
     void updateExtraSelections();
@@ -88,6 +93,9 @@ private:
 
     bool maybeSave(); //
     void setCurrentFile(const QString &fileName); //
+
+
+    void setTitle(QString filePath, bool modMark=false, const QString app=appName);
     //
 
     QTextDocument *document() const;

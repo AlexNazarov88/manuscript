@@ -17,7 +17,7 @@
 #include "mainwindow.h"
 
 /*
-Core::Core(QWidget *widget, QMainWindow *mw, QObject *parent = 0)
+Core::Core(QWidget *widget, QMainWindow *mw, QObject *parent=0)
   : QObject(parent), m_widget(widget), m_mainWindow(mw)
 {
     QTimer::singleShot(0, this, SLOT(parseArguments()));
@@ -227,6 +227,18 @@ void Core::parseArguments() // needs improving
         emit handleInput(cmd);
 }
 
+void Core::documentWasModified() //
+{
+    //QString shownName = m_fileName;
+
+    setTitle(m_fileName, true, appName);
+
+    //if (document()->isModified()) {
+     //   shownName + "*";
+         // temp
+    //}
+    //m_mainWindow->setWindowModified(true); //
+}
 //private
 void Core::updateExtraSelections()
 {
@@ -378,15 +390,44 @@ void Core::setCurrentFile(const QString &fileName) //
 {
     m_fileName = fileName;
     document()->setModified(false);
-    m_mainWindow->setWindowModified(false); //
+    //m_mainWindow->setWindowModified(false); //
 
     QString shownName = m_fileName;
     if (m_fileName.isEmpty())
         shownName = "untitled";
-    m_mainWindow->setWindowFilePath(shownName + " - Manuscript"); // only for Windows?
+
+     // need a call for setTitle() here
+    setTitle(shownName); //
+
+    //m_mainWindow->setWindowFilePath(shownName); // only for Windows?
+
+
+    //m_mainWindow->setWindowTitle(shownName + appName); // out of scope of the function, move otherplace
+
     qDebug()<<"ended setCurrentFile";
 }
 
+void Core::setTitle(QString filePath, bool modMark, const QString app)
+{
+    QString shownName;
+
+    if (filePath.isEmpty()) {
+        shownName += "untitled"; //?????????? ebana zatychka
+    } else {
+        shownName += filePath;
+    }
+
+
+
+    if (modMark == true) { // ?
+        shownName += "*"; // when file not set, replaces untitled with *
+    }
+
+    shownName += app;
+    qDebug()<< "setTitle() - "<< shownName;
+
+    m_mainWindow->setWindowTitle(shownName);
+}
 
 
 bool Core::saveFile(const QString &fileName) // replacer / supplement of save()
@@ -405,6 +446,7 @@ bool Core::saveFile(const QString &fileName) // replacer / supplement of save()
     out << document()->toPlainText();
 
     setCurrentFile(fileName);
+    setTitle(fileName, false); // ebana zatychka
     //openFile(fileName); //
 
     return true;
