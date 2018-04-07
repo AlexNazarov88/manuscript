@@ -18,8 +18,8 @@ class QTimer;
 class QFile;
 
 
-typedef QLatin1String _;
-const QString appName = " - Manuscript";
+typedef QLatin1String _;  // create global.h and move there
+const QString appName = " - Manuscript"; //
 
 using namespace FakeVim::Internal;
 
@@ -32,6 +32,23 @@ using namespace FakeVim::Internal;
         (ed->call); \
     }
 
+
+class Title //
+{
+public:
+
+    void updateTitle();
+    QString title() { return title; }
+    //bool isModified() { return isDocModified; }
+    void setModifiedMark() { name += "*";}
+
+private:
+    QString name;
+    //bool isDocModified;
+    QString path;
+    QString title;
+
+};
 
 class Core : public QObject
 {
@@ -93,9 +110,10 @@ private:
 
     bool maybeSave(); //
     void setCurrentFile(const QString &fileName); //
-
-
-    void setTitle(QString filePath, bool modMark=false, const QString app=appName);
+    QString strippedName(const QString &fullFileName); //
+    QString strippedPath(const QString &fullFileName); //
+    void updateTitle(QString filePath, bool modMark=false, const QString app=appName);
+    void showTitle(QString shownName);
     //
 
     QTextDocument *document() const;
@@ -106,6 +124,9 @@ private:
     QString m_statusMessage;
     QString m_statusData;
     QString m_fileName;
+
+    bool m_docModified;
+    QString m_title;
 
     QList<QTextEdit::ExtraSelection> m_searchSelection;
     QList<QTextEdit::ExtraSelection> m_clearSelection;

@@ -25,13 +25,14 @@ Core::Core(QWidget *widget, QMainWindow *mw, QObject *parent=0)
 */
 
 
-
+/*
 void Core::openFile(const QString &fileName) // currently replaced by loadFile()
 {
     //emit handleInput(QString(_(":r %1<CR>")).arg(fileName)); // not working well with other functions
 
     m_fileName = fileName;
 }
+*/
 
 //public slots
 void Core::changeStatusData(const QString &info)
@@ -215,7 +216,6 @@ void Core::parseArguments() // needs improving
 
     //const QString editFileName = args.value(1, QString(_("/usr/share/vim/vim74/tutor/tutor"))); //
     const QString editFileName = args.value(1); //
-    //openFile(editFileName);
 
     if (!editFileName.isEmpty()) { //
         loadFile(editFileName);
@@ -227,17 +227,11 @@ void Core::parseArguments() // needs improving
         emit handleInput(cmd);
 }
 
-void Core::documentWasModified() //
+void Core::documentWasModified() // improve and add check before calling setTitle
 {
-    //QString shownName = m_fileName;
+    m_docModified = true;
 
-    setTitle(m_fileName, true, appName);
-
-    //if (document()->isModified()) {
-     //   shownName + "*";
-         // temp
-    //}
-    //m_mainWindow->setWindowModified(true); //
+    updateTitle(m_fileName, m_docModified, appName); //
 }
 //private
 void Core::updateExtraSelections()
@@ -299,6 +293,8 @@ bool Core::save() // needs redirection in case file is not created (to saveAs())
                               tr("Cannot write to file \"%1\"").arg(m_fileName));
         return false;
     }
+
+    m_docModified = false;
 
     return true;
 }
@@ -389,49 +385,62 @@ bool Core::maybeSave() //
 void Core::setCurrentFile(const QString &fileName) //
 {
     m_fileName = fileName;
-    document()->setModified(false);
+    //document()->setModified(false);
     //m_mainWindow->setWindowModified(false); //
 
-    QString shownName = m_fileName;
     if (m_fileName.isEmpty())
-        shownName = "untitled";
+        m_fileName = "untitled";
 
-     // need a call for setTitle() here
-    setTitle(shownName); //
-
-    //m_mainWindow->setWindowFilePath(shownName); // only for Windows?
-
-
-    //m_mainWindow->setWindowTitle(shownName + appName); // out of scope of the function, move otherplace
+    updateTitle(m_fileName); //
 
     qDebug()<<"ended setCurrentFile";
 }
 
-void Core::setTitle(QString filePath, bool modMark, const QString app)
+QString Core::strippedName(const QString &fullFileName) //
 {
-    QString shownName;
+    return QFileInfo(fullFileName).fileName();
+}
 
-    if (filePath.isEmpty()) {
-        shownName += "untitled"; //?????????? ebana zatychka
-    } else {
-        shownName += filePath;
+QString Core::strippedPath(const QString &fullFileName) //
+{
+    return QFileInfo(fullFileName).path();
+}
+
+void Core::updateTitle(QString fileName, bool modMark, const QString app)
+{
+    qDebug() << "setTitle()";
+
+    QString name = "";
+    QString path = "";
+    QString newTitle = "";
+
+    if (fileName == "untitled") {
+        name += "[untitled]";
+    } else if (fileName != "untitled") {
+        name += strippedName(fileName);
+        path += " (" + strippedPath(fileName) + ")";
     }
 
-
-
-    if (modMark == true) { // ?
-        shownName += "*"; // when file not set, replaces untitled with *
+    if (modMark == true) {
+        name += "*";
     }
 
-    shownName += app;
-    qDebug()<< "setTitle() - "<< shownName;
+    newTitle += name + path + app;
 
+    if(!(newTitle == m_title)) {
+        m_title = newTitle;
+        showTitle(m_title);
+    }
+}
+
+void Core::showTitle(QString shownName)
+{
     m_mainWindow->setWindowTitle(shownName);
 }
 
-
 bool Core::saveFile(const QString &fileName) // replacer / supplement of save()
 {
+    qDebug()<<"entered saveFile()";
     QFile file(fileName);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
         QMessageBox::warning(m_mainWindow, tr("Manuscript"),
@@ -446,8 +455,9 @@ bool Core::saveFile(const QString &fileName) // replacer / supplement of save()
     out << document()->toPlainText();
 
     setCurrentFile(fileName);
-    setTitle(fileName, false); // ebana zatychka
-    //openFile(fileName); //
+
+    m_docModified = false;
+    //openFile(fileName);
 
     return true;
 }
@@ -467,8 +477,6 @@ void Core::loadFile(const QString &fileName) //
 
     document()->setPlainText(in.readAll());
     setCurrentFile(fileName);
-    //m_fileName = fileName;
-
 }
 
 QTextDocument *Core::document() const //
