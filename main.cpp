@@ -65,6 +65,7 @@ void initHandler(FakeVimHandler &handler)
     handler.handleCommand(_("set nopasscontrolkey"));
 
     // Set some Vim options.
+    // check other options
     handler.handleCommand(_("set expandtab"));
     handler.handleCommand(_("set shiftwidth=8"));
     handler.handleCommand(_("set tabstop=16"));

@@ -187,7 +187,7 @@ void MainWindow::createActions()
 */
 }
 
-void MainWindow::createStatusBar() // to do
+void MainWindow::createStatusBar() //
 {
     //m_lineColumn = new QLabel();
    // m_selection = new QLabel();

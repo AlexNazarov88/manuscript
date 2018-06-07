@@ -32,8 +32,8 @@ using namespace FakeVim::Internal;
         (ed->call); \
     }
 
-
-class Title //
+/*
+class Title // questionable, come up with better solution
 {
 public:
 
@@ -49,6 +49,7 @@ private:
     QString title;
 
 };
+*/
 
 class Core : public QObject
 {
@@ -112,7 +113,7 @@ private:
     void setCurrentFile(const QString &fileName); //
     QString strippedName(const QString &fullFileName); //
     QString strippedPath(const QString &fullFileName); //
-    void updateTitle(QString filePath, bool modMark=false, const QString app=appName);
+    void updateTitle(QString filePath, bool modMark=false, const QString app=appName); //
     void showTitle(QString shownName);
     //
 
@@ -125,8 +126,8 @@ private:
     QString m_statusData;
     QString m_fileName;
 
-    bool m_docModified;
-    QString m_title;
+    bool m_docModified; //
+    QString m_title; //
 
     QList<QTextEdit::ExtraSelection> m_searchSelection;
     QList<QTextEdit::ExtraSelection> m_clearSelection;

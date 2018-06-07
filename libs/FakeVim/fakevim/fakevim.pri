@@ -11,4 +11,5 @@ HEADERS += $$PWD/fakevimhandler.h \
            $$PWD/fakevimactions.h
 
 CONFIG += qt
+CONFIG += static
 QT += widgets
