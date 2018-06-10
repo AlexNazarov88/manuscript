@@ -65,6 +65,7 @@ public:
         //setCurrentFile(QString()); //
 
         connect(document(), &QTextDocument::contentsChanged, this, &Core::documentWasModified);
+        m_docModified=false;
     }
 
     void openFile(const QString &fileName); // deprecated
