@@ -229,9 +229,12 @@ void Core::parseArguments() // needs improving
 
 void Core::documentWasModified() // improve and add check before calling setTitle
 {
-    if(!(m_docModified == true))
+    if(m_docModified == false) {
         m_docModified = true;
         updateTitle(m_fileName, m_docModified, appName);
+    } else {
+        return;
+    }
 }
 //private
 void Core::updateExtraSelections()
@@ -393,7 +396,7 @@ void Core::setCurrentFile(const QString &fileName) //
 
     updateTitle(m_fileName); //
 
-    qDebug()<<"ended setCurrentFile";
+    //qDebug()<<"ended setCurrentFile";
 }
 
 QString Core::strippedName(const QString &fullFileName) //
@@ -406,10 +409,8 @@ QString Core::strippedPath(const QString &fullFileName) //
     return QFileInfo(fullFileName).path();
 }
 
-void Core::updateTitle(QString fileName, bool modMark, const QString app) //
+void Core::updateTitle(QString fileName, bool modMark, const QString app) // to upgrade
 {
-    qDebug() << "setTitle()";
-
     QString name = "";
     QString path = "";
     QString newTitle = "";

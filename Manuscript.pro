@@ -11,16 +11,6 @@ RC_ICONS1 = icons/scroll.ico
 SUBDIRS += \
     fakevim
 
-#QMAKE_LFLAGS += -Wl,-rpath,"'\$$ORIGIN'"
-
-
-
-#DISTFILES +=  \ # not working
-#             ../LICENSE \
-#             ../Manuscript.sh \
-#             ../README.pdf \
-#             ../changelog.txt
-
 #static { # Everything below takes effect with CONFIG += static
 #    CONFIG += static
 #    #QTPLUGIN += qsqloci qgif
@@ -41,8 +31,7 @@ SOURCES += main.cpp \
 RESOURCES += \
     app_res.qrc
 
-LIBS += -L"/opt/$${TARGET}/libs" #dont know if it works
-        #-Wl,-rpath,/opt/$${TARGET}/libs #
+LIBS += -L"/opt/$${TARGET}/libs"
         -lQt5Widgets
         -lQt5Gui
         -lQt5Core
@@ -86,6 +75,7 @@ LIBS += -L"/opt/$${TARGET}/libs" #dont know if it works
         -licudata
         -lXau
         -lXdmcp
+
 #
 #BUILD
 #
@@ -124,10 +114,10 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target libs other_files script
 
-#QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/../libs\'"
-#unix:QMAKE_RPATHDIR += -Wl,-rpath=$ORIGIN/../libs
+
+# Modify rpath by adding gcc command
 QMAKE_LFLAGS += -Wl,-rpath,"'\$$ORIGIN/../libs'"
-#LDFLAGS += "-Wl,-rpath=XORIGIN/../libs"
+
 
 
 #Application version
@@ -141,8 +131,3 @@ DEFINES += "VERSION_MAJOR=$$VERSION_MAJOR"\
 
 #Target version
 VERSION = $${VERSION_MAJOR}.$${VERSION_MINOR}.$${VERSION_BUILD}
-
-
-
-
-
