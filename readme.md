@@ -11,8 +11,8 @@ Further development of project implies broadening of supported commands and addi
 App works now only on Linux, but can be easily ported to Win32. 
 
 ### Additional information
-*[Here you can learn more about Manuscript`s functionality](https://github.com/AlexNazarov88/manuscript/blob/master/help.pdf)
+* [Here you can learn more about Manuscript`s functionality](https://github.com/AlexNazarov88/manuscript/blob/master/help.pdf)
 
-*[License](https://github.com/AlexNazarov88/manuscript/blob/master/LICENSE)
+* [License](https://github.com/AlexNazarov88/manuscript/blob/master/LICENSE)
 
 ![Project logo](https://raw.githubusercontent.com/AlexNazarov88/manuscript/master/icons/scroll-2.png "Manuscript logo")
