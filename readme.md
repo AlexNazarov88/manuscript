@@ -13,4 +13,6 @@ App works now only on Linux, but can be easily ported to Win32.
 
 Further development of project implies broadening of supported commands and adding plugin modules.
 
-![alt text](https://github.com/AlexNazarov88/manuscript/tree/fakevim/icons/scroll-2.png "Manuscript logo")
+![alt text][logo]
+
+[logo]: https://github.com/AlexNazarov88/manuscript/tree/fakevim/icons/scroll-2.png "Manuscript logo"
