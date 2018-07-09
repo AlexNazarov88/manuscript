@@ -13,4 +13,4 @@ App works now only on Linux, but can be easily ported to Win32.
 
 Further development of project implies broadening of supported commands and adding plugin modules.
 
-![Project logo] (https://raw.githubusercontent.com/AlexNazarov88/manuscript/blob/master/icons/scroll-2.png "Manuscript logo")
+![Project logo](https://raw.githubusercontent.com/AlexNazarov88/manuscript/master/icons/scroll-2.png "Manuscript logo")
