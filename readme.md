@@ -7,9 +7,9 @@ Manuscript supports such core editing features, as several modes (diverged from 
 basic text movement, work with registers, text manipulations and some commands executed in a command line. 
 App works now only on Linux, but can be easily ported to Win32. 
 
-[Here you can learn more about Manuscript`s functionality](../blob/master/help.pdf)
+[Here you can learn more about Manuscript`s functionality](https://github.com/AlexNazarov88/manuscript/blob/master/help.pdf)
 
-[License](../blob/master/LICENSE)
+[License](https://github.com/AlexNazarov88/manuscript/blob/master/LICENSE)
 
 Further development of project implies broadening of supported commands and adding plugin modules.
 
